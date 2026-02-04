@@ -1,0 +1,551 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Frist Museum Landing Page</title>
+  <meta name="description" content="Futuristic landing page promoting specials on interstellar cacti from a remote cactus planet. Dark theme. No JavaScript." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #ffffff;
+      --bg-elev: #1e1e1e;
+      --text: #2b2b2b;
+      --muted: #778712;
+      --primary: #ec87c8; 
+      --secondary: #4a7742; 
+      --accent: #ff56d2; 
+      --danger: #ff4d6d;
+      --card: #0e151a;
+      --border: #5a5a5a;
+      --light-bdr: #8191df;
+      --glow: 0 0 24px rgba(120, 45, 137, 0.25), 0 0 48px rgba(69,163,255,.15);
+      --radius: 14px;
+      --shadow: 0 10px 40px rgba(0,0,0,.45);
+    }
+    /* Base */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 700px at 80% -10%, rgba(69,163,255,.1), transparent 60%),
+                  radial-gradient(900px 500px at -10% 10%, rgba(0,255,198,.08), transparent 60%),
+                  var(--bg);
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { width: min(1200px, 92%); margin-inline: auto; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .6rem;
+      padding: .8rem 1.1rem; border-radius: 999px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+      color: var(--text); font-weight: 600; letter-spacing: .3px;
+      box-shadow: var(--shadow);
+      transition: transform .25s ease, box-shadow .35s ease, border-color .25s ease;
+    }
+    .btn:hover { transform: translateY(-2px); border-color: rgba(0,255,198,.6); box-shadow: 0 6px 30px rgba(0,255,198,.25); }
+    .btn:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+    .btn.primary { background: linear-gradient(90deg, rgba(0,255,198,.2), rgba(69,163,255,.2)); border-color: rgba(0,255,198,.45); }
+
+    /* Skip link */
+    .skip { position: absolute; left: -9999px; top: auto; }
+    .skip:focus { left: 1rem; top: 1rem; background: var(--bg-elev); padding: .5rem .75rem; border-radius: .5rem; outline: 2px solid var(--primary); }
+
+    /* Header / Nav */
+    header { position: sticky; top: 0; z-index: 50; backdrop-filter: saturate(140%) blur(8px); background: rgba(11,15,18,.6); border-bottom: 1px solid rgba(21,35,45,.6); }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+      padding: .9rem 0;
+    }
+    .brand { font-family: Arial, Helvetica, Inter, sans-serif; font-weight: 700; letter-spacing: .12em; font-size: clamp(1rem, 2vw + .5rem, 1.25rem); display: inline-flex; align-items: center; gap: .6rem; }
+    .brand .dot { width: .6rem; height: .6rem; border-radius: 50%; background: radial-gradient(circle at 30% 30%, var(--primary), transparent 70%); box-shadow: 0 0 16px rgba(0,255,198,.8); }
+
+    /* Responsive nav (no JS) */
+    #nav-toggle { position: absolute; opacity: 0; pointer-events: none; }
+    .hamburger { display: none; width: 42px; height: 32px; padding: 6px; border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: border-color .25s ease; }
+    .hamburger:hover { border-color: rgba(0,255,198,.45); }
+    .hamburger span { display: block; height: 2px; background: var(--text); margin: 6px 0; transition: transform .35s ease, opacity .35s ease; }
+
+    nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1rem; }
+    nav a { padding: .5rem .75rem; border-radius: .5rem; border: 1px solid transparent; }
+    nav a:focus-visible { outline: 2px solid var(--secondary); outline-offset: 2px; }
+    nav a:hover { border-color: rgba(69,163,255,.5); background: rgba(69,163,255,.08); }
+
+    /* Mobile menu */
+    @media (max-width: 860px) {
+      /* Align hamburger to the right on mobile */
+      .nav { justify-content: flex-start; }
+      .nav .brand { order: 0; }
+      .nav nav { order: 1; }
+      .nav .hamburger { order: 2; margin-left: auto; }
+      .hamburger { display: inline-block; }
+      nav ul { position: absolute; inset: calc(100% + 6px) 0 auto 0; background: rgba(11,15,18,.98); border-bottom: 1px solid var(--border); padding: .75rem; display: grid; gap: .5rem; transform-origin: top; transform: scaleY(0); transition: transform .3s ease; }
+      #nav-toggle:checked ~ nav ul { transform: scaleY(1); }
+      /* animate icon */
+      #nav-toggle:checked + label .top { transform: translateY(8px) rotate(45deg); }
+      #nav-toggle:checked + label .mid { opacity: 0; }
+      #nav-toggle:checked + label .bot { transform: translateY(-8px) rotate(-45deg); }
+    }
+
+    /* Hero */
+    .hero {
+      padding: clamp(2rem, 4vw, 4rem) 0 2rem;
+      display: grid; gap: 2rem; align-items: center;
+      grid-template-columns: 1.2fr .8fr;
+    }
+    .hero-copy h1 { font-family: Arial, Helvetica, Inter, sans-serif; font-size: clamp(2rem, 4vw + 1rem, 3.3rem); line-height: 1.1; margin: 0 0 1rem; letter-spacing: .06em; }
+    .accent { background: linear-gradient(90deg, var(--primary), var(--secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero-copy p { color: var(--muted); max-width: 60ch; }
+    .cta { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.25rem; }
+
+    .holo-card {
+      justify-self: end; width: min(520px, 100%);
+      background: linear-gradient(180deg, rgba(120,255,84,.06), rgba(0,255,198,.06));
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1.2rem; box-shadow: var(--glow), var(--shadow);
+      display: grid; gap: .6rem; align-content: start;
+    }
+    .badge { display: inline-flex; align-items: center; gap: .5rem; font-size: .85rem; color: var(--accent); }
+    .badge i { width: .5rem; height: .5rem; background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px rgba(120,255,84,.8); }
+    
+    /* Specials Grid - Overview */
+    .overview-section {
+      padding: clamp(2rem, 4vw, 4rem) 0 2rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 30px;
+     }
+    .overview-title {
+    font-family: Arial, Helvetica, sans-serif; letter-spacing: .08em; margin: 0 0 1rem; 
+    }
+
+    .overview-section img { width: 100%; height: auto;
+    }
+
+    .quote {
+    font-style: italic; margin: 15px 0; font-size: small;
+    }
+    
+    .citation {
+    font-style: italic; font-size: small;
+    }
+    /* Mobile Overview */
+    @media (max-width: 860px) {
+   .overview-section {
+    grid-template-columns: 1fr;
+   }
+   }
+    /* Specials Grid */
+    .section { padding: 2.5rem; }
+    .section h2 { font-family:Arial, Helvetica, Inter, sans-serif; letter-spacing: .08em; margin: 0 0 1rem; }
+    .grid {
+      display: grid; gap: 1.1rem;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .card {
+      grid-column: span 3;
+      background-color:#f3fff7;
+      border: 1px solid var(--muted); border-radius: var(--light-bdr);border-radius: 10px;
+      padding: 1rem; display: grid; gap: .2rem; position: relative; overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .35s ease;
+    }
+    .card:hover { transform: translateY(-4px); border-color: rgba(237, 74, 248, 0.45); box-shadow: var(--glow); }
+    .card .thumb {
+      aspect-ratio: 9/8; border-radius: 10px; overflow: hidden; position: relative;
+      background: radial-gradient(600px 200px at 20% 20%, rgba(0,255,198,.15), transparent 60%),
+                  radial-gradient(600px 200px at 80% 80%, rgba(69,163,255,.2), transparent 60%),
+                  linear-gradient(135deg, #071015, #0a1217 60%);
+    }
+    .meta { display: flex; justify-content: space-between; align-items:center; }
+    
+    /* Species / Features */
+    .features { display: flex; flex-wrap: wrap; }
+    .feature {
+      border: 1px solid var(--muted); border-radius: 999px; padding: .45rem .7rem; color: var(--glow);
+      transition: background .25s ease, border-color .25s ease;
+    }
+    .feature:hover { border-color: rgba(69,163,255,.45); background: rgba(69,163,255,.08); }
+
+
+    /* Gallery Grid */
+    .section { padding: 2.5rem; }
+    .section h2 { font-family: Arial, Helvetica, Inter, sans-serif; letter-spacing: .08em; margin: 0 0 1rem; }
+    .grid {
+      display: grid; gap: 1.1rem;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .box {
+      grid-column: span 4;
+      background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem; display: grid; gap: .2rem; position: relative; overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .35s ease;
+    }
+    .box:hover { transform: translateY(-4px); border-color: rgba(255, 126, 40, 0.798); box-shadow: var(--glow); }
+    .box .picture {
+      aspect-ratio: 9.5/7; border-radius: 10px; overflow: hidden; position: relative;
+      background: radial-gradient(600px 200px at 20% 20%, rgba(234, 131, 28, 0.732), transparent 60%),
+                  radial-gradient(600px 200px at 80% 80%, rgba(236, 127, 240, 0.85), transparent 60%),
+                  linear-gradient(135deg, #071015, #0a1217 60%);
+    }
+     
+    .alpha { display: flex; justify-content: space-between; align-items: baseline; gap: .75rem; color: var(--secondary)}
+    .year { color: var(--primary); font-weight: 200; letter-spacing: .04em; font-size: small; }
+    .artist-name {
+      font-size: medium; color: #313131; font-weight: 500;
+    }
+    .script {
+      font-size: small; font-style: italic; color: #5b5b5b;
+    }
+    /* Gallery / button */
+    .detail { display: flex; flex-wrap: wrap; gap: .6rem; appearance: none; background: transparent;  width: fit-content; justify-self: start;}
+    .detail {
+      font-size: medium;
+      border: 1px solid var(--border); border-radius: 999px; padding: .45rem .7rem; color: var(--muted);
+      transition: background .25s ease, border-color .25s ease;}
+    .detail:hover { border-color: rgba(69,163,255,.45); background: rgba(69,163,255,.08); }
+
+
+    /* Visit information (simple grid) */
+    .timeline { display: grid; gap: 1.2rem; grid-template-columns: repeat(2, 1fr); }
+    .date-time { background: var(--bg); border: 2px solid var(--accent); border-radius: .8rem; padding: .8rem; }
+    .date-time strong { color: var(--secondary); letter-spacing: .04em; }
+    .info {color:#db1ad1; font-size: large; font-weight: 500;}
+    .hours {color:#464545; font-size: small; font-weight: 100;}
+
+
+    /* Footer */
+    footer { border-top: 1px solid var(--border); padding: 1.5rem 0 3rem; color: var(--muted); }
+    .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .about {font-size: small; color: #8a8a8a;}
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
+      .holo-card { justify-self: stretch; }
+      .card { grid-column: span 12; }
+      .box { grid-column: span 12; }
+      .timeline { grid-template-columns: repeat(2, 1fr); }
+            .contact-form .field { grid-column: span 12; }
+    }
+    @media (max-width: 560px) {
+      .cta { flex-direction: column; align-items: stretch; }
+      .timeline { grid-template-columns: 1fr; }
+    }
+
+    /* Motion preferences */
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
+  </style>
+
+
+  <!-- NAVIGATION -->
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#" aria-label="Frist Art Museum">
+        <span class="dot" aria-hidden="true"></span>
+        Frist Art Museum
+      </a>
+      <input type="checkbox" id="nav-toggle" aria-label="Toggle navigation" />
+      <label for="nav-toggle" class="hamburger" aria-hidden="true" title="Menu" aria-controls="primary-menu">
+        <span class="top"></span>
+        <span class="mid"></span>
+        <span class="bot"></span>
+      </label>
+      <nav aria-label="Primary">
+        <ul id="primary-menu">
+          <li><a href="#visit">Visit</a></li>
+          <li><a href="#exhibition-and-events">Exhibitions & Events</a></li>
+          <li><a href="#join-and-give">Join & Give</a></li>
+          <li><a href="#learn">Learn</a></li>
+          <li><a href="#get-involved">Get Involved</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <main id="main">
+    <section class="container hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">The <span class="accent">Impressionist Revolution:</span> Monet to Matisse</h1>
+        <p>Knowing more about the Impression Movement: Monet to Matisse. 
+          This exhibition, made by the Dallas Museum of Art with the purpose of bringing art-lovers closer 
+          to Art and through Art, people understand the fascinating stories of Impressionism, 
+          from 1874 to the early 20th century. </p>
+        <div class="cta">
+          <a class="btn primary" href="#specials">Get Tickets</a>
+        </div>
+      </div>
+      <aside class="holo-card" aria-label="Featured offer">
+        <p style="margin:0;color:var(--muted)">Event Specific Information</p>
+        <h3 style="margin:.25rem 0 0">• Date: Feb 26–May 31, 2026</h3>
+        <h3 style="margin:.25rem 0 0">• Location: Upper-Level Galleries</h3>
+        <div class="features" style="margin-top:.4rem">
+          <span class="feature">Plan to visit -></span>
+        </div>
+      </aside>
+    </section>
+
+
+    <!-- EXHIBITION OVERVIEW -->
+    <section class="overview-section container">
+  <div class="text">
+    <h2 id="overview-title">Overview</h2>
+    <p>
+      In 1874, a group of young painters in Paris staged a quiet rebellion against
+      academic art by organizing their own exhibition outside the official Paris
+      Salon. Artists such as Claude Monet rejected polished, historical scenes in
+      favor of quick brushstrokes, visible texture, and modern subjects—cafés, city
+      streets, and changing light. Critics mocked the style as unfinished and
+      derisively labeled it Impressionism, but the name stuck, capturing the
+      artists’ goal of painting fleeting visual impressions rather than idealized
+      reality.
+    </p>
+
+    <p class="quote">
+      “Art is not what you see, but what you make others see.” — Edgar Degas
+    </p>
+
+    <p>
+      By the early 20th century, Impressionism had transformed the direction of
+      modern art. Its emphasis on perception, color, and individual vision inspired
+      later movements like Post-Impressionism, Fauvism, and even abstraction. More
+      broadly, Impressionism helped legitimize artistic experimentation, breaking
+      the authority of academic institutions and opening the door for artists to
+      redefine what art could be in the modern world.
+    </p>
+  </div>
+
+  <div class="image">
+    <img
+      src="pictures/Monet.png"
+      alt="Woman with a Parasol - Madame Monet and Her Son, Claude Monet"
+    >
+    <p class="citation">National Gallery of Art, Washington, D.C, Artsy</p>
+  </div>
+</section>
+
+
+ <!-- RELATED ARTISTS -->
+    <section id="specials" class="section container" aria-labelledby="specials-title">
+      <h2 id="specials-title">Related Artists</h2>
+      <div class="grid">
+        <article class="card" aria-labelledby="s1-title">
+          <div class="thumb" aria-hidden="true"> <img src="pictures/Claude Monet.png" alt="Claude Monet: Self-portrait in a Beret"></div>
+          <div class="meta"><h3 id="s1-title">CLAUDE MONET</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="s2-title">
+          <div class="thumb" aria-hidden="true"><img src="pictures/Van Gogh.png" alt="	Vincent Willem van Gogh, self-portrait"></div>
+          <div class="meta"><h3 id="s2-title">VINCENT WILLEM VAN GOGH</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+
+        </article>
+        <article class="card" aria-labelledby="s3-title">
+          <div class="thumb" aria-hidden="true"><img src="pictures/Degas.png" alt="Edgar Degas, self-portrait"></div>
+          <div class="meta"><h3 id="s3-title">EDGAR DEGAS</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="s4-title">
+          <div class="thumb" aria-hidden="true"><img src="pictures/Berthe Morisot.png" alt="Berthe Morisot, self-portrait"></div>
+          <div class="meta"><h3 id="s4-title">BERTHE MORISOT</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="s5-title">
+          <div class="thumb" aria-hidden="true"><img src="pictures/Pissarro.png" alt="Camille Pissarro, self-portrait"></div>
+          <div class="meta"><h3 id="s5-title">CAMILLE PISSARRO</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="s6-title">
+          <div class="thumb" aria-hidden="true"><img src="pictures/Gauguin.png" alt="Paul Gauguin, self-portrait"></div>
+          <div class="meta"><h3 id="s6-title">PAUL GAUGUIN</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="s7-title">
+          <div class="thumb" aria-hidden="true"><img src="pictures/Mondrian.png" alt="Piet Mondrian, self-portrait"></div>
+          <div class="meta"><h3 id="s7-title">PIET MONDRIAN</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+        </article>
+
+        <article class="card" aria-labelledby="s8-title">
+          <div class="thumb" aria-hidden="true"><img src="pictures/Matisse.png" alt="Henri Matisse, self-portrait"></div>
+          <div class="meta"><h3 id="s8-title">HENRI MATISSE</h3></div>
+          <div class="features">
+            <span class="feature">Why it matters?</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+
+
+    <!-- ARTWORK GALLERY -->
+    <section id="gallery" class="section container" aria-labelledby="specials-title">
+      <h2 id="specials-title">Artwork Galleries</h2>
+      <div class="grid">
+
+        <article class="box" aria-labelledby="s1-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/In the dining room.png" alt="In the dinning room"></div>
+          <div class="alpha">
+            <h3 id="s1-title">In the Dinning Room</h3> <span class="year">1886</span></div>
+            <p class="artist-name"> Berthe Morisot</p>
+            <p class="script"> Berthe Morisot, In the Dining Room, 1886, oil on canvas, 
+              Chester Dale Collection, 1963.10.185</p>
+            <button class="detail">More details -></button>
+          </article>
+
+        <article class="box" aria-labelledby="s2-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/cabbage.png" alt="The Gardener"></div>
+          <div class="alpha">
+            <h3 id="s1-title">The Gardener - Old Peasant with Cabbage</h3> <span class="year">1883-1895</span></div>
+            <p class="artist-name"> Camille Pissarro</p>
+            <p class="script"> Camille Pissarro, The Gardener - Old Peasant with Cabbage, 
+              1883-1895, oil on canvas, Collection of Mr. and Mrs. Paul Mellon, 1994.59.6 </p>
+            <button class="detail">More details -></button>
+          </article>
+
+       <article class="box" aria-labelledby="s3-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/Ballet.png" alt="Before the Ballet"></div>
+          <div class="alpha">
+            <h3 id="s1-title">Before the Ballet</h3> <span class="year">1890/1892</span></div>
+            <p class="artist-name"> Edgar Degas</p>
+            <p class="script"> Edgar Degas, Before the Ballet, 1890-92, oil on canvas, 
+              Widener Collection, 1942.9.19</p>
+            <button class="detail">More details -></button>
+        </article>
+
+        <article class="box" aria-labelledby="s4-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/girl-in-white.png" alt="Girl in White"></div>
+          <div class="alpha">
+            <h3 id="s1-title">Girl in White</h3> <span class="year">1890</span></div>
+            <p class="artist-name"> Vincent Van Gogh</p>
+            <p class="script"> Vincent Van Gogh, Girl in White, 1890, oil on canvas, 
+              Chester Dale Collection, 1963.10.30</p>
+            <button class="detail">More details -></button>
+        </article>
+
+        <article class="box" aria-labelledby="s5-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/Farmhouse.png" alt="Farmhouse in Provence"></div>
+          <div class="alpha">
+            <h3 id="s1-title">Farmhouse in Provence</h3> <span class="year">1886</span></div>
+            <p class="artist-name"> Vincent Van Gogh</p>
+            <p class="script"> Vincent Van Gogh, Farmhouse in Provence, 1888, oil on canvas, 
+              Ailsa Mellon Bruce Collection, 1970.17.34</p>
+            <button class="detail">More details -></button>
+        </article>
+
+
+        <article class="box" aria-labelledby="s6-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/Kitchen Garden.png" alt="Kitchen Gardens at L'Hermitage, Pontoise"></div>
+          <div class="alpha">
+            <h3 id="s1-title">Kitchen Gardens at L'Hermitage, Pontoise</h3> <span class="year">1874</span></div>
+            <p class="artist-name"> Camille Pissarro</p>
+            <p class="script"> Camille Pissarro, Kitchen Gardens at L'Hermitage, Pontoise, 
+              1874, oil on canvas, National Galleries of Scotland Collection</p>
+            <button class="detail">More details -></button>
+        </article>
+
+
+        <article class="box" aria-labelledby="s7-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/Japanese Bridge.png" alt="The Japanese Footbridge"></div>
+          <div class="alpha">
+            <h3 id="s1-title">The Japanese Footbridge</h3> <span class="year">1899</span></div>
+            <p class="artist-name"> Claud Monet</p>
+            <p class="script"> Claude Monet, The Japanese Footbridge, 1899, oil on canvas, Gift of 
+              Victoria Nebeker Coberly, in memory of her son John W. Mudd, and Walter H. and 
+              Leonore Annenberg, 1992.9.1</p>
+            <button class="detail">More details -></button>
+        </article>
+
+        <article class="box" aria-labelledby="s8-title">
+          <div class="picture" aria-hidden="true"> <img src="pictures/Nanny.png" alt="Nanny and Child"></div>
+          <div class="alpha">
+            <h3 id="s1-title">Nanny and Child</h3> <span class="year">1877/1878</span></div>
+            <p class="artist-name"> Eva Gonzalès </p>
+            <p class="script">  Eva Gonzalès, Nanny and Child, 1877/1878, oil on canvas, 
+              Chester Dale Fund, 2006.72.1</p>
+            <button class="detail">More details -></button>
+        </article>
+     </section>
+
+
+
+    <!--  CONTACT INFORMATION -->
+    <section id="visit-info" class="section container" aria-labelledby="delivery-title">
+      <h2 id="visit-title">Visit Information</h2>
+      <div class="timeline">
+        <div class="date-time"><strong>Visit Info</strong><br/> 
+          <ul class="info">
+        <li>Feb 26 – May 31, 2026</li>
+        <li>Upper-Level Galleries</li>
+         </ul>
+      </div>
+
+        <div class="date-time"><strong>Opening Coversation on Feb 26, 2026</strong><br/>
+        <ul class="hours">
+        <li>Mon: 10am–5:30pm</li>
+        <li>Tue: Closed</li>
+        <li>Wed: Closed</li>
+        <li>Thu: 10am–8pm</li>
+        <li>Fri: 10am–5:30pm</li>
+        <li>Sat: 10am–5:30pm</li>
+        <li>Sun: 1pm–5:30pm</li>
+      </ul>
+     </div>
+      </div>
+    </section>
+
+
+
+  <!--  CONTACT INFORMATION -->  
+  <footer>
+    <div class="container footer-inner">
+      <div>  Frist Art Museum</div>
+      <ul class="about">
+        <li>About the Frist</li>
+        <li>New & pressed released</li>
+        <li>Hospitality & Inclusion</li>
+        <li>Plan an event</li>
+        <li>Careers & Internships</li>
+        <li>Community Report</li>
+        <li>Finacial information</li>
+      </ul>
+      <div class="features">
+        <span class="feature">All content © 2026 Frist Art Museum</span>
+        <span class="feature">Term of use</span>
+        <span class="feature">Privacy policy</span>
+      </div>
+    </div>
+  </footer>
+
+  
+</body>
+</html>
